@@ -1,0 +1,55 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-4 mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <div class="mb-3 mt-3 text-center">
+                        <img src="assets/img/logo-fitfood.svg" alt="foto" width="150" height="auto"> <br>
+                        <img src="assets/img/logo-mamavicenta.svg" alt="foto" width="150" height="auto">
+                    </div>
+                    <form [formGroup]="formUser" (ngSubmit)="onSubmit()" novalidate="">
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="email" name="email" formControlName="email"
+                                required autocomplete="email" autofocus placeholder="name@example.com">
+                            <label for="email">Email</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="password" name="password"
+                                formControlName="password" placeholder="Password" required>
+                            <label for="floatingPassword">Password</label>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12 offset-md-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" checked name="remember"
+                                        id="remember">
+                                    <label class="form-check-label" for="remember">
+                                        Recordarme
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-0">
+                            <div class="col-md-12 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-box-arrow-in-right"></i>
+                                    Ingresar
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row mb-0">
+                            <div class="col-md-12 text-center">
+                                <a class="btn btn-link" href="#">
+                                    Olvidaste tu contraseña
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

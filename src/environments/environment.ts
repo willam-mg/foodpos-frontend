@@ -3,7 +3,23 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  store: {
+    userId: 'UtEiLicy',
+    userToken: 'UTrAcUsL',
+    userData: 'CumbeANC',
+    sucursal: 'ermItyrO',
+    puntoVentaId: 'deCentER',
+    puntoVentaNombre: 'WitROxia',
+  },
+  apiConfig: {
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'Cache-Control': 'no-cache',
+    },
+    path: 'http://localhost:8000/api/v1'
+  }
 };
 
 /*
