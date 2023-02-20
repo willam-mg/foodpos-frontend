@@ -10,6 +10,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbModule, NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { BreadcrumbModule } from 'angular-crumbs';
+import { TokenInterceptor } from './shared/interceptors/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,13 @@ import { BreadcrumbModule } from 'angular-crumbs';
     FormsModule,
     BreadcrumbModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -6,6 +6,7 @@ import { User } from 'src/app/shared/models/user';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../../service/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { LoadingService } from 'src/app/shared/services/loading.service';
 
 @Component({
   selector: 'app-login',
@@ -17,10 +18,13 @@ export class LoginComponent implements OnInit {
   submitted: boolean;
   formUser: FormGroup;
   subscription: Subscription;
+  isLoading: boolean;
 
   constructor(
     private userService: AuthService,
     private router: Router,
+    public loadingService: LoadingService,
+    private changeDetector: ChangeDetectorRef,
     private title: Title) {
     this.title.setTitle('Nuevo administrador');
     this.user = new User();
@@ -35,9 +39,18 @@ export class LoginComponent implements OnInit {
     });
     this.submitted = false;
     this.subscription = new Subscription;
+    this.isLoading = false;
   }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
+    this.loadingService.httpProgress().subscribe((status: boolean) => {
+      this.isLoading = status;
+      this.changeDetector.detectChanges();
+    });
+    this.changeDetector.detectChanges();
   }
 
   onSubmit() {
