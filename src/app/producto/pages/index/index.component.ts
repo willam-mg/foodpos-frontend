@@ -72,6 +72,7 @@ export class IndexComponent implements OnInit {
   edit(id: number) {
     const modalRef = this.modalService.open(EditComponent);
     modalRef.componentInstance.setId(id);
+    modalRef.componentInstance.getProducto();
     modalRef.componentInstance.isUpdated.subscribe((data: boolean) => {
       Swal.fire(
         'Guardado',

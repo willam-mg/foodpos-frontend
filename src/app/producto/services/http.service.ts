@@ -59,12 +59,9 @@ export class HttpService {
    * @returns Observable<Producto>
    */
   public update(id: number, body: Producto): Observable<Producto> {
-    let params = new HttpParams();
-    params = params.append('id', id.toString());
-    return this.http.put<Producto>(`${path}/productos/update`, body, {
+    return this.http.put<Producto>(`${path}/productos/update/${id}`, body, {
       headers: new HttpHeaders(environment.apiConfig.headers),
       reportProgress: true,
-      params: params
     });
   }
 
@@ -74,12 +71,9 @@ export class HttpService {
    * @returns Observable<Producto>
    */
   public show(id: number): Observable<Producto> {
-    let params = new HttpParams();
-    params = params.append('id', id.toString());
-    return this.http.get<Producto>(`${path}/productos/show`, {
+    return this.http.get<Producto>(`${path}/productos/show/${id}`, {
       headers: new HttpHeaders(environment.apiConfig.headers),
       reportProgress: true,
-      params: params
     });
   }
 
@@ -89,12 +83,9 @@ export class HttpService {
    * @returns Observable<String>
    */
   public delete(id: number): Observable<MessageResponse> {
-    let params = new HttpParams();
-    params = params.append('id', id.toString());
-    return this.http.delete<MessageResponse>(`${path}/productos/delete`, {
+    return this.http.delete<MessageResponse>(`${path}/productos/delete/${id}`, {
       headers: new HttpHeaders(environment.apiConfig.headers),
       reportProgress: true,
-      params: params
     });
   }
 

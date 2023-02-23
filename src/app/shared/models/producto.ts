@@ -16,6 +16,7 @@ export class Producto {
     foto_thumbnail: string;
     foto_thumbnail_sm: string;
     punto_venta: PuntoVenta;
+    foto_preview?: string;
 
     constructor() {
         this.nombre = "";
