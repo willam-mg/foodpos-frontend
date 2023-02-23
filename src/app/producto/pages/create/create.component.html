@@ -1,0 +1,155 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Nuevo producto</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<form [formGroup]="formProducto" (ngSubmit)="onSubmit()" novalidate="">
+    <div class="modal-body">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" formControlName="nombre" autocomplete="nombre"
+                placeholder="name@example.com"
+                [class.is-invalid]="formProducto.controls['nombre'].invalid && formProducto.controls['nombre'].touched">
+            <label for="nombre">Nombre</label>
+            <div [class.invalid-feedback]="formProducto.controls['nombre'].invalid && formProducto.controls['nombre'].touched">
+                <span *ngIf="formProducto.controls['nombre'].errors?.['required']">
+                    El nombre es requerido
+                </span>
+            </div>
+        </div>
+        <div class="form-floating mb-3">
+            <textarea class="form-control" formControlName="descripcion" autocomplete="descripcion"
+                placeholder="name@example.com"
+                [class.is-invalid]="formProducto.controls['descripcion'].invalid && formProducto.controls['descripcion'].touched">
+            </textarea>
+            <label for="descripcion">Descripcion</label>
+            <div [class.invalid-feedback]="formProducto.controls['descripcion'].invalid && formProducto.controls['descripcion'].touched">
+                <span *ngIf="formProducto.controls['descripcion'].errors?.['required']">
+                    El descripcion es requerido
+                </span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-4">
+                <div class="form-floating mb-3">
+                    <input type="number" class="form-control" formControlName="precio" autocomplete="precio"
+                        placeholder="name@example.com"
+                        [class.is-invalid]="formProducto.controls['precio'].invalid && formProducto.controls['precio'].touched">
+                    <label for="precio">precio</label>
+                    <div [class.invalid-feedback]="formProducto.controls['precio'].invalid && formProducto.controls['precio'].touched">
+                        <span *ngIf="formProducto.controls['precio'].errors?.['required']">
+                            El precio es requerido
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-inline">
+                    <label>Foto</label>
+                        <img src="{{producto.foto}}" alt="foto" *ngIf="producto.foto" width="100">
+                    &nbsp;
+                    <button type="button" class="btn btn-outline-secondary" (click)="inputFoto.click()" title="Seleccionar imagen">
+                        <i class="bi bi-image"></i>
+                        Seleccionar
+                    </button>
+                    <input hidden type="file" accept="image/*" #inputFoto (change)="onFileChange($event)" />
+                    <div [class.invalid-feedback]="formProducto.controls['foto'].invalid && formProducto.controls['foto'].touched">
+                        <span *ngIf="formProducto.controls['foto'].errors?.['required']">
+                            El foto es requerido
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-floating mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" formControlName="publicado" id="flexSwitchCheckDefault"
+                            [checked]="formProducto.controls['publicado'].value == true? true: false"
+                            [class.is-invalid]="formProducto.controls['publicado'].invalid && formProducto.controls['publicado'].touched">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Publicado</label>
+                        <div [class.invalid-feedback]="formProducto.controls['publicado'].invalid && formProducto.controls['publicado'].touched">
+                            <span *ngIf="formProducto.controls['publicado'].errors?.['required']">
+                                El publicado es requerido
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div class="form-floating mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" formControlName="precio_x_gr" id="flexSwitchCheckDefault" [checked]="formProducto.controls['precio_x_gr'].value == true? true: false"
+                        [class.is-invalid]="formProducto.controls['precio_x_gr'].invalid && formProducto.controls['precio_x_gr'].touched">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Precio por Gramo</label>
+                        <div [class.invalid-feedback]="formProducto.controls['precio_x_gr'].invalid && formProducto.controls['precio_x_gr'].touched">
+                            <span *ngIf="formProducto.controls['precio_x_gr'].errors?.['required']">
+                                El precio por gramo es requerido
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-floating mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" formControlName="es_producto" id="flexSwitchCheckDefaul2" [checked]="formProducto.controls['es_producto'].value == true? true: false"
+                        [class.is-invalid]="formProducto.controls['es_producto'].invalid && formProducto.controls['es_producto'].touched">
+                        <label class="form-check-label" for="flexSwitchCheckDefaul2">Es producto</label>
+                        <div [class.invalid-feedback]="formProducto.controls['es_producto'].invalid && formProducto.controls['es_producto'].touched">
+                            <span *ngIf="formProducto.controls['es_producto'].errors?.['required']">
+                                El es producto es requerido
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-floating mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" formControlName="es_aditamento" id="flexSwitchCheckDefaul3" [checked]="formProducto.controls['es_aditamento'].value == true? true: false"
+                        [class.is-invalid]="formProducto.controls['es_aditamento'].invalid && formProducto.controls['es_aditamento'].touched">
+                        <label class="form-check-label" for="flexSwitchCheckDefaul3">Es aditamento</label>
+                        <div [class.invalid-feedback]="formProducto.controls['es_aditamento'].invalid && formProducto.controls['es_aditamento'].touched">
+                            <span *ngIf="formProducto.controls['es_aditamento'].errors?.['required']">
+                                El es aditamento es requerido
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-floating mb-3">
+            <select class="form-select" name="punto_venta_id" id="punto_venta_id" formControlName="punto_venta_id">
+                <option *ngFor="let item of puntosVenta" value="{{item.id}}" [selected]="formProducto.controls['punto_venta_id'].value==item.id"> {{item.nombre_punto_venta}} </option>
+            </select>
+            <label for="floatingturno">Restaurante</label>
+            <div [class.invalid-feedback]="formProducto.controls['punto_venta_id'].invalid && formProducto.controls['punto_venta_id'].touched">
+                <span *ngIf="formProducto.controls['punto_venta_id'].errors?.['required']">
+                    El restaurante es requerido
+                </span>
+            </div>
+        </div>
+        <div class="form-floating mb-3">
+            <textarea class="form-control" formControlName="comentario" autocomplete="comentario"
+                placeholder="name@example.com"
+                [class.is-invalid]="formProducto.controls['comentario'].invalid && formProducto.controls['comentario'].touched">
+            </textarea>
+            <label for="comentario">comentario</label>
+            <div [class.invalid-feedback]="formProducto.controls['comentario'].invalid && formProducto.controls['comentario'].touched">
+                <span *ngIf="formProducto.controls['comentario'].errors?.['required']">
+                    El comentario es requerido
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close('Close click')">
+            <i class="bi bi-x"></i>
+            Cerrar
+        </button>
+        <button type="submit" [disabled]="submitted" class="btn btn-success">
+            <i class="bi bi-save"></i>
+            Guardar
+        </button>
+    </div>
+</form>

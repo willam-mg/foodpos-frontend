@@ -1,0 +1,117 @@
+<div class="row justify-content-between">
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+        <form [formGroup]="formProducto" (ngSubmit)="search()" novalidate="">
+            <div class="input-group mb-3">
+                <input type="text" formControlName="nombre" class="form-control" placeholder="Nombre producto"
+                    aria-label="Recipient's username" aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 text-end">
+        <button class="btn btn-outline-secondary" (click)="create()" type="submit">
+            Nuevo producto
+            <i class="bi bi-plus"></i>
+        </button>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table align-middle table-hover">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col" class="text-capitalize"> Foto </th>
+                <th scope="col" class="text-capitalize"> nombre </th>
+                <th scope="col" class="text-capitalize"> descripcion </th>
+                <th scope="col" class="text-capitalize"> precio </th>
+                <th scope="col" class="text-capitalize"> precio por Gr. </th>
+                <th scope="col" class="text-capitalize"> es producto </th>
+                <th scope="col" class="text-capitalize"> es aditamento </th>
+                <th scope="col" class="text-capitalize"> publicado </th>
+                <th scope="col" class="text-capitalize"> punto de venta</th>
+                <th scope="col" class="text-capitalize"> comentario </th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of productos">
+                <th scope="row">{{item.id}}</th>
+                <td>
+                    <img *ngIf="item.foto" src="{{item.foto}}" alt="foto" width="100">
+                    <img *ngIf="!item.foto" src="./assets/img/no-image.svg" alt="foto" width="100">
+                </td>
+                <td>
+                    {{item.nombre}}
+                </td>
+                <td>
+                    {{item.descripcion}}
+                </td>
+                <td>
+                    {{item.precio}}
+                </td>
+                <td>
+                    <span *ngIf="item.precio_x_gr" class="badge bg-success">Si</span>
+                    {{item.precio_x_gr == false ? 'No': ''}}
+                </td>
+                <td>
+                    {{item.es_producto == true ? 'Si': 'No'}}
+
+                </td>
+                <td>
+                    <span *ngIf="item.es_aditamento" class="badge bg-success">Si</span>
+                    {{item.es_aditamento == false ? 'No': ''}}
+                </td>
+                <td>
+                    {{item.publicado == true ? 'Si': 'No'}}
+                </td>
+                <td>
+                    {{item.punto_venta_id == null ? 'No hay': item.punto_venta.nombre_punto_venta}}
+                </td>
+                <td>
+                    {{item.comentario}}
+                </td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="bi bi-three-dots-vertical"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <button class="dropdown-item" type="button">
+                                <i class="bi bi-eye"></i> Ver
+                            </button>
+                            <li>
+                                <button type="button" class="dropdown-item" (click)="edit(item.id!)">
+                                    <i class="bi bi-pencil"></i> Editar
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item" (click)="delete(item.id!)">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            <tr *ngIf="productos.length == 0">
+                <td colspan="12" class="text-center">
+                    No hay registros
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-between p-2">
+        <select class="form-select" style="width: auto" [(ngModel)]="pagination.pageSize" (ngModelChange)="search()">
+            <option *ngFor="let item of pagination.sizeOptions" [ngValue]="item">{{item}} por pagina</option>
+        </select>
+        <small class="p-3">{{pagination.totalCount}} resultados</small>
+        <div class="table-responsive">
+            <ngb-pagination [collectionSize]="pagination.totalCount" [(page)]="pagination.page"
+                [pageSize]="pagination.pageSize" (pageChange)="search()">
+            </ngb-pagination>
+        </div>
+    </div>
+</div>

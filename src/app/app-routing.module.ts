@@ -25,6 +25,15 @@ const routes: Routes = [
       breadcrumb: 'Usuarios'
     }
   },
+  {
+    path: 'productos',
+    component: MainLayoutComponent,
+    loadChildren: () => import('./producto/producto.module').then(m => m.ProductoModule),
+    canActivate: [AuthGuard],
+    data: {
+      breadcrumb: 'Productos'
+    }
+  },
   // {
   //   path: 'clientes',
   //   component: MainLayoutComponent,
