@@ -10,6 +10,7 @@ import { EditComponent } from '../edit/edit.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { CreateComponent } from '../create/create.component';
+import { ShowComponent } from '../show/show.component';
 
 
 @Component({
@@ -42,6 +43,7 @@ export class IndexComponent implements OnInit {
       nombre: new FormControl(""),
       publicado: new FormControl(false),
       punto_venta_id: new FormControl(null),
+      es_aditamento: new FormControl(null),
     });
   }
 
@@ -58,7 +60,7 @@ export class IndexComponent implements OnInit {
     let filterSearch = new Producto();
     filterSearch.nombre = this.formProducto.value.nombre;
     filterSearch.publicado = this.formProducto.value.publicado;
-    filterSearch.punto_venta_id = this.formProducto.value.punto_venta_id;
+    filterSearch.es_aditamento = this.formProducto.value.es_aditamento;
     this.subscription.add(
       this.httpService.search(filterSearch, this.pagination).subscribe(data => {
         this.submitted = false;
@@ -117,6 +119,20 @@ export class IndexComponent implements OnInit {
         });
       }
     })
+  }
+
+  show(id: number) {
+    const modalRef = this.modalService.open(ShowComponent, { size: 'xl' });
+    modalRef.componentInstance.setId(id);
+    modalRef.componentInstance.getProducto();
+    modalRef.componentInstance.isUpdated.subscribe((data: boolean) => {
+      Swal.fire(
+        'Guardado',
+        'los datos se guardaron correctamente',
+        'success'
+      );
+      this.search();
+    });
   }
 
 }

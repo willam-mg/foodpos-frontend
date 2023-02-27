@@ -1,3 +1,5 @@
+import { environment } from "src/environments/environment";
+import { Aditamento } from "./aditamento";
 import { PuntoVenta } from "./punto-venta";
 
 export class Producto {
@@ -17,6 +19,7 @@ export class Producto {
     foto_thumbnail_sm: string;
     punto_venta: PuntoVenta;
     foto_preview?: string;
+    mis_aditamentos: Array<Aditamento>;
 
     constructor() {
         this.nombre = "";
@@ -33,5 +36,6 @@ export class Producto {
         this.foto_thumbnail = "";
         this.foto_thumbnail_sm = "";
         this.punto_venta = new PuntoVenta();
+        this.mis_aditamentos = [];
     }
 }

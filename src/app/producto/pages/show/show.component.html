@@ -1,1 +1,144 @@
-<p>show works!</p>
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Producto {{producto.id}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<!-- <form [formGroup]="formProducto" (ngSubmit)="onSubmit()" novalidate=""> -->
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                <ul class="list-group">
+                    <li class="list-group-item text-capitalize">
+                        nombre: 
+                        <b>{{producto.nombre}}</b>
+                    </li>
+                    <li class="list-group-item text-capitalize">
+                        descripcion: 
+                        <b>{{producto.descripcion}}</b>
+                    </li>
+                    <li class="list-group-item text-capitalize">
+                        precio: 
+                        <b>{{producto.precio}}</b>
+                    </li>
+                    <li class="list-group-item text-capitalize">
+                        precio por gr: 
+                        <span *ngIf="producto.precio_x_gr" class="badge bg-success">Si</span>
+                        <b>
+                            {{producto.precio_x_gr == false ? 'No': ''}}
+                        </b>
+                    </li>
+                    <li class="list-group-item text-capitalize">
+                        es producto: 
+                        <b>{{producto.es_producto == true ? 'Si': 'No'}}</b>
+                    </li>
+                    <li class="list-group-item text-capitalize">
+                        es aditamento: 
+                        <span *ngIf="producto.es_aditamento" class="badge bg-success">Si</span>
+                        <b>
+                            {{producto.es_aditamento == false ? 'No': ''}}
+                        </b>
+                    </li>
+                    <li class="list-group-item text-capitalize">
+                        publicado: 
+                        <b>{{producto.publicado == true ? 'Si': 'No'}}</b>
+                    </li>
+                    <li class="list-group-item text-capitalize">
+                        punto de venta: 
+                        <b>{{producto.punto_venta_id == null ? 'No hay': producto.punto_venta.nombre_punto_venta}}</b>
+                    </li>
+                    <li class="list-group-item text-capitalize">
+                        comentario: 
+                        <b>{{producto.comentario}}</b>
+                    </li>
+                    <li class="list-group-item text-capitalize">
+                        foto: 
+                        <img *ngIf="producto.foto" src="{{producto.foto}}" alt="foto" width="100">
+                        <img *ngIf="!producto.foto" src="./assets/img/no-image.svg" alt="foto" width="100">
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
+                <h4>Aditamentos</h4>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 col-xl-7">
+                        <div class="card mb-3" *ngFor="let item of aditamentos">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img *ngIf="item.mi_aditamento.foto" src="{{item.mi_aditamento.foto}}" class="img-fluid rounded-start" alt="...">
+                                    <img *ngIf="!item.mi_aditamento.foto" src="./assets/img/no-image.svg" class="img-fluid rounded-start" alt="foto">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{item.mi_aditamento.nombre}}</h5>
+                                        <p class="card-text">
+                                            {{item.mi_aditamento.descripcion}}
+                                        </p>
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-sm btn-outline-danger" type="button" (click)="removeAditamento(item.id!)">
+                                                <i class="bi bi-trash"></i>
+                                                Remover
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
+                        <form [formGroup]="formProducto" (ngSubmit)="search()" novalidate="">
+                            <div class="input-group mb-3">
+                                <input type="text" formControlName="nombre" class="form-control" placeholder="Buscar por nombre"
+                                    aria-label="Recipient's username" aria-describedby="button-addon2">
+                                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                        <div class="card mb-3" *ngFor="let item of productos">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img *ngIf="item.foto" src="{{item.foto}}" class="img-fluid rounded-start" alt="...">
+                                    <img *ngIf="!item.foto" src="./assets/img/no-image.svg" class="img-fluid rounded-start" alt="foto">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{item.nombre}}</h5>
+                                        <p class="card-text">
+                                            {{item.descripcion}}
+                                        </p>
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-sm btn-outline-success" type="button" (click)="addAditamento(item.id!)">
+                                                <i class="bi bi-plus"></i>
+                                                Agregar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between p-2">
+                            <select class="form-select" style="width: auto" [(ngModel)]="pagination.pageSize" (ngModelChange)="search()">
+                                <option *ngFor="let item of pagination.sizeOptions" [ngValue]="item">{{item}}</option>
+                            </select>
+                            <small class="p-3">{{pagination.totalCount}} </small>
+                            <div class="table-responsive">
+                                <ngb-pagination [collectionSize]="pagination.totalCount" [(page)]="pagination.page"
+                                    [pageSize]="pagination.pageSize" (pageChange)="search()">
+                                </ngb-pagination>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close('Close click')">
+            <i class="bi bi-x"></i>
+            Cerrar
+        </button>
+        <button type="submit" [disabled]="submitted" class="btn btn-success">
+            <i class="bi bi-save"></i>
+            Guardar
+        </button>
+    </div>
+<!-- </form> -->

@@ -35,6 +35,9 @@ export class HttpService {
     params = params.append('nombre', filterSearch.nombre);
     params = params.append('publicado', filterSearch.publicado);
     params = params.append('punto_venta_id', filterSearch.punto_venta_id);
+    if (filterSearch.es_aditamento) {
+      params = params.append('es_aditamento', filterSearch.es_aditamento);
+    }
 
     return this.http.get<DataResponse>(`${path}/productos`, {
       headers: new HttpHeaders(environment.apiConfig.headers),
@@ -44,16 +47,42 @@ export class HttpService {
   }
 
   /**
-   * create a cliente
+   * create a producto
    * @param body Observable<Producto>
    * @returns Producto
    */
   public create(body: Producto): Observable<Producto> {
     return this.http.post<Producto>(`${path}/productos/create`, body, httpHeaders);
   }
+  
+  /**
+   * create aditamento
+   * @param body Observable<Producto>
+   * @returns Producto
+   */
+  public addAditamento(idProducto: number, idAditamento: number): Observable<Producto> {
+    let body = {
+      producto_id: idProducto,
+      aditamento_id: idAditamento,
+      descripcion: "es aditamento",
+    }
+    return this.http.post<Producto>(`${path}/productos/aditamento/create`, body, httpHeaders);
+  }
+  
+  /**
+   * create aditamento
+   * @param body Observable<Producto>
+   * @returns Producto
+   */
+  public removeAditamento(id: number): Observable<Producto> {
+    return this.http.delete<Producto>(`${path}/productos/aditamento/remove/${id}`, {
+      headers: new HttpHeaders(environment.apiConfig.headers),
+      reportProgress: true,
+    });
+  }
 
   /**
-   * update a cliente
+   * update a producto
    * @param id number
    * @param body Producto
    * @returns Observable<Producto>
@@ -66,7 +95,7 @@ export class HttpService {
   }
 
   /**
-   * get a cliente
+   * get a producto
    * @param id number
    * @returns Observable<Producto>
    */
