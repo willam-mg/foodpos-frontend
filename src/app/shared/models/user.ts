@@ -10,7 +10,7 @@ export class User {
     password_confirmation?: string;
     turno: string;
     punto_venta_id?: number;
-    punto_venta?: PuntoVenta;
+    mi_punto_venta?: PuntoVenta;
 
     constructor() {
         this.name = '';
@@ -20,6 +20,6 @@ export class User {
         this.foto = '';
         this.turno = '';
         this.punto_venta_id = 0;
-        this.punto_venta = new PuntoVenta();
+        this.mi_punto_venta = new PuntoVenta();
     }
 }

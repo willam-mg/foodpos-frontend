@@ -68,8 +68,8 @@ export class LoginComponent implements OnInit {
             localStorage.setItem(environment.store.userData, JSON.stringify(data.user));
             if (data.user.punto_venta_id) {
               localStorage.setItem(environment.store.puntoVentaId, String(data.user.punto_venta_id));
-              localStorage.setItem(environment.store.sucursal, String(data.user.punto_venta?.restaurante));
-              localStorage.setItem(environment.store.puntoVentaNombre, String(data.user.punto_venta?.nombre_punto_venta));
+              localStorage.setItem(environment.store.sucursal, String(data.user.mi_punto_venta?.restaurante));
+              localStorage.setItem(environment.store.puntoVentaNombre, String(data.user.mi_punto_venta?.nombre_punto_venta));
             } 
             this.user = new User();
             this.submitted = false;
