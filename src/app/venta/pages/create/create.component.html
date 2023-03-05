@@ -1,0 +1,159 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
+        <div class="row mb-3">
+            <div class="col-xs-12 col-sm-12 col-md-5">
+                <div class="form-group mb-3">
+                    <!-- <form [formGroup]="formSearchCodebar" (ngSubmit)="searchByCodeBar()" novalidate=""> -->
+                    <form [formGroup]="formSearchCodebar" novalidate="">
+                        <label for="codigo_barra">
+                            Codigo de barra 
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group">
+                            <input type="text" id="codigo_barra" formControlName="codeBar" class="form-control"
+                                placeholder="Ingrese el codigo de barra" aria-label="Buscar" aria-describedby="button-codebar" autofocus autocomplete="false">
+                            <button class="btn btn-outline-secondary" type="submit" id="button-codebar" title="Agregar por codigo de barra">
+                                <i class="bi bi-upc"></i>
+                            </button>
+                            <button class="btn btn-outline-secondary" (click)="searchProducto()" type="button" id="button-cliente-select" title="Mostrar productos">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-2">
+                <div class="form-group mb-3">
+                    <label for="producto">
+                        Cantidad
+                        <span class="text-danger">*</span>
+                    </label>
+                    <input type="number" min="1" step="1" [(ngModel)]="inputCantidad" class="form-control" placeholder="Cantidad">
+                </div>
+            </div>
+        </div>
+        
+        <div class="table-responsive mb-5">
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr class="table-secondary">
+                        <th scope="col"></th>
+                        <th scope="col">Codigo</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of detalleVenta">
+                        <td>
+                            <button class="btn btn-outline-secondary" type="button" (click)="removeDetalle(item)" title="Remover de la lista">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                        <th scope="row">{{item.producto.id}}</th>
+                        <td>{{item.producto.nombre}}</td>
+                        <td>{{item.precio}}</td>
+                        <td>{{item.cantidad}}</td>
+                        <td>
+                            <b>
+                                {{item.subtotal}}
+                            </b>
+                        </td>
+                    </tr>
+                    <tr *ngIf="detalleVenta.length == 0">
+                        <td colspan="8" class="text-center">
+                            No hay registros
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr class="table-secondary">
+                        <td colspan="6" class="text-end">
+                        </td>
+                        <td>
+                            <b>{{totalDetalleVenta()}}</b>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+        <div class="shadow p-3 mb-5 bg-body rounded" style="height: 89vh; position:fixed; top:11vh; right:0; width:280px">
+            <div class="form-group mb-3">
+                <label for="cliente">
+                    Cliente
+                    <span class="text-danger">*</span>
+                </label>
+                <!-- <div class="input-group">
+                    <button class="btn btn-outline-secondary" disabled (click)="searchCliente()" type="button">
+                        <i class="bi bi-people"></i>
+                    </button>
+                    <input type="hidden" [(ngModel)]="cliente.id">
+                    <input type="text" style="cursor: pointer;" [(ngModel)]="cliente.nombre_razon_social"
+                        (click)="searchCliente()" readonly class="form-control" placeholder="Buscar ..." aria-label="Buscar"
+                        aria-describedby="button-cliente-select">
+                    <button class="btn btn-outline-secondary" (click)="searchCliente()" type="submit"
+                        id="button-cliente-select">
+                        <i class="bi bi-hand-index" *ngIf="!cliente.id"></i>
+                        <i class="bi bi-check" *ngIf="cliente.id"></i>
+                    </button>
+                </div> -->
+            </div>
+    
+            <div class="form-group mb-3">
+                <label for="fieldObservacion">Observacion</label>
+                <textarea [(ngModel)]="fieldObservacion" id="fieldObservacion" class="form-control" cols="5" rows="1"></textarea>
+            </div>
+            
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="mb-3 card-title text-center">
+                        <h4>Total: {{totalDetalleVenta()}} Bs</h4>
+                    </div>
+                    <div class="mb-3">
+                        <label>Efectivo</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Efectivo" [(ngModel)]="inputEfectivo" (keyup)="calcCambio()" [disabled]="totalDetalleVenta() == 0" title="Efectivo">
+                            <button class="btn btn-outline-secondary" disabled title="Cambio"> Bs. </button>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label>Cambio</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-dark text-white" placeholder="Cambio" [(ngModel)]="inputCambio" disabled title="Cambio">
+                            <button class="btn btn-outline-secondary" disabled title="Cambio"> Bs. </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-2">
+                <div class="input-group">
+                    <button class="btn btn-outline-secondary" disabled title="Efectivo">
+                        <i class="bi bi-calendar"></i>
+                    </button>
+                    <input type="date" class="form-control" placeholder="Efectivo" [(ngModel)]="inputFecha" title="Fecha">
+                </div>
+            </div>
+            <div class="">
+                <div class="input-group">
+                    <button class="btn btn-outline-secondary" disabled title="Efectivo">
+                        <i class="bi bi-clock"></i>
+                    </button>
+                    <input type="time" class="form-control" placeholder="Efectivo" [(ngModel)]="inputHora" title="Hora">
+                </div>
+            </div>
+            <div class="mb-3 position-fixed bottom-0" style="width: 250px;">
+                <div class="d-grid gap-2">
+                    <button class="btn btn-lg btn-success" (click)="registrarVenta()" [disabled]="submitted">
+                        <i class="bi bi-plus"></i>
+                        Registrar venta
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

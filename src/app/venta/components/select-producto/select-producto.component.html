@@ -1,0 +1,70 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Seleccionar producto</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <form [formGroup]="formSearch" (ngSubmit)="search()">
+                <div class="input-group mb-3">
+                    <input type="text" formControlName="fieldCodigo" class="form-control w-25" placeholder="Codigo" aria-label="Buscar"
+                        aria-describedby="button-addon2">
+                    <input type="text" formControlName="fieldNombre" class="form-control w-50" placeholder="Buscar ..." aria-label="Buscar"
+                        aria-describedby="button-addon2">
+                    <button class="btn btn-outline-secondary" [disabled]="submitted" type="submit" id="button-addon2">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Detalle</th>
+                    <th scope="col">Precio por gr.</th>
+                    <th scope="col">Es producto</th>
+                    <th scope="col">Es aditamento</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of productos" (click)="select(item)" style="cursor: pointer;">
+                    <th scope="row">{{item.id}}</th>
+                    <td>{{item.nombre}}</td>
+                    <td>{{item.precio}}</td>
+                    <td>{{item.precio_x_gr}}</td>
+                    <td>{{item.es_producto}}</td>
+                    <td>{{item.es_aditamento}}</td>
+                </tr>
+                <tr *ngIf="productos.length == 0">
+                    <td colspan="8" class="text-center">
+                        No hay registros
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-between p-2">
+            <select class="form-select" style="width: auto" [(ngModel)]="pagination.pageSize" (ngModelChange)="search()">
+                <option *ngFor="let item of pagination.sizeOptions" [ngValue]="item">{{item}} por pagina</option>
+            </select>
+            <small class="p-3">{{pagination.totalCount}} resultados</small>
+            <div class="table-responsive">
+                <ngb-pagination [collectionSize]="pagination.totalCount" [(page)]="pagination.page"
+                    [pageSize]="pagination.pageSize" (pageChange)="search()">
+                </ngb-pagination>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.close('Save click')">
+        <i class="bi bi-x"></i>
+        Cerrar
+    </button>
+</div>

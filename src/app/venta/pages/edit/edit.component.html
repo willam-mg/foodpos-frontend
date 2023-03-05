@@ -1,0 +1,36 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Editar venta {{model.id}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<form [formGroup]="formUser" (ngSubmit)="onSubmit()" novalidate="">
+    <div class="modal-body">
+        <div class="form-floating mb-3">
+            <input type="date" class="form-control" formControlName="fecha" autocomplete="nombre_completo"
+                placeholder="name@example.com"
+                [class.is-invalid]="formUser.controls['fecha'].invalid && formUser.controls['hora'].touched">
+            <label for="nombre_completo">Fecha</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="time" class="form-control" id="hora" formControlName="hora" autocomplete="email"
+                placeholder="00:00"
+                [class.is-invalid]="formUser.controls['hora'].invalid && formUser.controls['fecha'].touched">
+            <label for="email">Hora</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <textarea class="form-control" name="observacion" id="observacion" formControlName="observacion">
+            </textarea>
+            <label for="floatingturno">Observacion</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close('Close click')">
+            <i class="bi bi-x"></i>
+            Cerrar
+        </button>
+        <button type="submit" [disabled]="submitted" class="btn btn-success">
+            <i class="bi bi-save"></i>
+            Guardar
+        </button>
+    </div>
+</form>

@@ -1,0 +1,136 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
+        <div class="row mb-3">
+            <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2 col-xl-2 text-capitalize">
+                <Label>Estado</Label>:
+                <div class="form-group">
+                    <span class="badge bg-success" *ngIf="venta.estado == 2">{{venta.estado}}</span>
+                    <span class="badge bg-danger" *ngIf="venta.estado == 3">{{venta.estado}}</span>
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-1 col-md-1 col-lg-1 col-xl-1 text-capitalize">
+                <label>N°:</label>
+                <div class="form-group">
+                    <b>{{venta.id}}</b>
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3 text-capitalize">
+                <label>Fecha:</label>
+                <div class="form-group">
+                    <b>{{venta.fecha}}</b>
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3 text-capitalize">
+                <label>Hora:</label>
+                <div class="form-group">
+                    <b>{{venta.hora}}</b>
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3 text-capitalize">
+                <label>Sucursal:</label>
+                <div class="form-group">
+                    <b>{{sucursalName}}</b>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+        <div class="row mb-3">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-capitalize text-end">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button [disabled]="venta.estado == 3" class="btn btn-outline-secondary"
+                        (click)="cancelarVenta()">
+                        <i class="bi bi-x-circle"></i>
+                        Cancelar
+                    </button>
+                    <button class="btn btn-outline-secondary" (click)="edit()">
+                        <i class="bi bi-pencil"></i>
+                        Editar
+                    </button>
+                    <!-- <button class="btn btn-outline-secondary" type="button" [routerLink]="['/ventas/recibo']" [queryParams]="{id:venta.id}">
+                        <i class="bi bi-printer"></i> Recibo
+                    </button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
+        <div class="row mb-3">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <table class="table table-bordered">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Codigo</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of venta.detalleVenta">
+                            <th scope="row">{{item.producto.id}}</th>
+                            <td>{{item.producto.nombre}}</td>
+                            <td>{{item.precio}}</td>
+                            <td>{{item.cantidad}}</td>
+                            <td>
+                                <b>
+                                    {{item.precio * item.cantidad}}
+                                </b>
+                            </td>
+                        </tr>
+                        <tr *ngIf="venta.detalleVenta.length == 0">
+                            <td colspan="7" class="text-center">
+                                No hay registros
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" class="text-end">
+                                <h4>Total</h4>
+                            </td>
+                            <td>
+                                <h4>{{totalDetalleVenta()}} Bs.</h4>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-capitalize">
+                        <label>Cliente:</label>
+                        <div class="form-group">
+                            <b>
+                                {{venta.cliente.nombre_razon_social}}
+                            </b>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-capitalize">
+                        <label>Observacion:</label>
+                        <div class="form-group">
+                            <b>
+                                {{venta.comentario}}
+                            </b>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row mb-3">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-capitalize">
+                        <h4>Total {{totalDetalleVenta()}} Bs.</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

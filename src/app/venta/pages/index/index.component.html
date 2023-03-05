@@ -1,0 +1,140 @@
+<div class="row justify-content-between mb-3">
+    <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xl-10">
+        <form [formGroup]="formVenta" (ngSubmit)="search()" novalidate="">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                    <label for="filterClienteInput">Nombre del cliente</label>
+                    <input type="text" formControlName="filterCliente" id="filterClienteInput" class="form-control" placeholder="Cliente">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+                    <label for="filterFechaInicioInput">Desde</label>
+                    <input type="date" formControlName="filterFechaInicio" class="form-control" placeholder="Fecha inicio">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+                    <label for="filterFechaFinInput">Hasta</label>
+                    <input type="date" formControlName="filterFechaFin" class="form-control" placeholder="Fecha fin">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+                    <label for="filterEstadoInput">Estado</label>
+                    <select formControlName="filterEstado" class="form-select" placeholder="Estado">
+                        <option value="">Todos</option>
+                        <option value="Vendido">Vendido</option>
+                        <option value="Cancelado">Cancelado</option>
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+                    <label>&nbsp;</label>
+                    <div class="form-group">
+                        <button class="btn btn-outline-secondary" type="submit">
+                            <i class="bi bi-search"></i> Buscar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 text-end">
+        <label>&nbsp;</label>
+        <div class="form-group">
+            <button class="btn btn-success" [routerLink]="['/ventas/create']">
+                <i class="bi bi-plus"></i>
+                Registrar Venta
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Vendedor</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Total</th>
+                <th scope="col">Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of ventas">
+                <th scope="row">{{item.id}}</th>
+                <td>{{item.cliente.nombre_razon_social}}</td>
+                <td>{{item.user.name}}</td>
+                <td>{{item.fecha}}</td>
+                <td>{{item.hora}}</td>
+                <td>{{item.total}}</td>
+                <td>
+                    <span class="badge bg-success" *ngIf="item.estado == 2" >{{item.estado}}</span>
+                    <span class="badge bg-danger" *ngIf="item.estado == 3" >{{item.estado}}</span>
+                </td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="bi bi-three-dots-vertical"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <button class="dropdown-item" type="button" [routerLink]="['/ventas/show']" [queryParams]="{id:item.id}">
+                                <i class="bi bi-eye"></i> Ver
+                            </button>
+                            <button class="dropdown-item" type="button" [routerLink]="['/ventas/recibo']" [queryParams]="{id:item.id}">
+                                <i class="bi bi-printer"></i> Reimprimir recibo
+                            </button>
+                            <button class="dropdown-item" type="button" (click)="cancelarVenta(item.id!)">
+                                <i class="bi bi-x-circle"></i> Cancelar venta
+                            </button>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            <tr *ngIf="ventas.length == 0">
+                <td colspan="8" class="text-center">
+                    No hay registros
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" class="text-end">
+                    <h4>Total:</h4>
+                </td>
+                <td>
+                    <h4>{{totalVentas()}} Bs.</h4>
+                </td>
+                <td colspan="2"></td>
+            </tr>
+        </tfoot>
+    </table>
+    <div class="row justify-content-around">
+    <!-- <div class="row justify-content-between"> -->
+        <div class="col-3">
+            <select class="form-select" style="width: auto" [(ngModel)]="pagination.pageSize" (ngModelChange)="search()">
+                <option *ngFor="let item of pagination.sizeOptions" [ngValue]="item">{{item}} por pagina</option>
+            </select>
+        </div>
+        <div class="col-2">
+            <button class="btn btn-light" (click)="pagination.setShowAll(); search()">
+                <i *ngIf="pagination.showAll" class="bi bi-arrows-angle-contract"></i> 
+                <i *ngIf="!pagination.showAll" class="bi bi-arrows-angle-expand"></i> 
+                {{ pagination.showAll ? 'Por pagina' : 'Mostrar todo' }}
+            </button>
+        </div>
+        <div class="col-2">
+            <small class="p-3">{{pagination.totalCount}} resultados</small>
+        </div>
+        <div class="col-5" *ngIf="!pagination.showAll">
+            <div class="table-responsive">
+                <ngb-pagination [collectionSize]="pagination.totalCount" [(page)]="pagination.page" [pageSize]="pagination.pageSize"
+                    (pageChange)="search()">
+                </ngb-pagination>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between p-2">
+
+        
+    
+    </div>
+</div>

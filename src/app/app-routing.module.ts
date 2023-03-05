@@ -43,24 +43,15 @@ const routes: Routes = [
   //     breadcrumb: 'Clientes'
   //   }
   // },
-  // {
-  //   path: 'productos',
-  //   component: MainLayoutComponent,
-  //   loadChildren: () => import('./producto/producto.module').then(m => m.ProductoModule),
-  //   canActivate: [AuthGuard],
-  //   data: {
-  //     breadcrumb: 'Productos'
-  //   }
-  // },
-  // {
-  //   path: 'ventas',
-  //   component: MainLayoutComponent,
-  //   loadChildren: () => import('./venta/venta.module').then(m => m.VentaModule),
-  //   canActivate: [AuthGuard],
-  //   data: {
-  //     breadcrumb: 'Mis ventas'
-  //   }
-  // },
+  {
+    path: 'ventas',
+    component: MainLayoutComponent,
+    loadChildren: () => import('./venta/venta.module').then(m => m.VentaModule),
+    canActivate: [AuthGuard],
+    data: {
+      breadcrumb: 'Mis ventas'
+    }
+  },
   {
     path: 'login',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
