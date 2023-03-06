@@ -24,14 +24,12 @@
                 <th scope="col">ID</th>
                 <th scope="col" class="text-capitalize"> Foto </th>
                 <th scope="col" class="text-capitalize"> nombre </th>
-                <th scope="col" class="text-capitalize"> descripcion </th>
                 <th scope="col" class="text-capitalize"> precio </th>
                 <th scope="col" class="text-capitalize"> precio por Gr. </th>
                 <th scope="col" class="text-capitalize"> es producto </th>
                 <th scope="col" class="text-capitalize"> es aditamento </th>
                 <th scope="col" class="text-capitalize"> publicado </th>
                 <th scope="col" class="text-capitalize"> punto de venta</th>
-                <th scope="col" class="text-capitalize"> comentario </th>
                 <th scope="col">Acciones</th>
             </tr>
         </thead>
@@ -39,14 +37,11 @@
             <tr *ngFor="let item of productos">
                 <th scope="row">{{item.id}}</th>
                 <td>
-                    <img *ngIf="item.foto" src="{{item.foto}}" alt="foto" width="100">
-                    <img *ngIf="!item.foto" src="./assets/img/no-image.svg" alt="foto" width="100">
+                    <img *ngIf="item.foto" src="{{item.foto_thumbnail_sm}}" alt="foto" width="50">
+                    <img *ngIf="!item.foto" src="./assets/img/no-image.svg" alt="foto" width="50">
                 </td>
                 <td>
                     {{item.nombre}}
-                </td>
-                <td>
-                    {{item.descripcion}}
                 </td>
                 <td>
                     {{item.precio}}
@@ -68,9 +63,6 @@
                 </td>
                 <td>
                     {{item.punto_venta_id == null ? 'No hay': item.punto_venta.nombre_punto_venta}}
-                </td>
-                <td>
-                    {{item.comentario}}
                 </td>
                 <td>
                     <div class="dropdown">

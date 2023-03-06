@@ -1,19 +1,19 @@
 <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Producto {{producto.id}}</h4>
+    <h4 class="modal-title" id="modal-basic-title">{{producto.nombre}}</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
 </div>
 <!-- <form [formGroup]="formProducto" (ngSubmit)="onSubmit()" novalidate=""> -->
     <div class="modal-body">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                <div class="text-center">
+                    <img *ngIf="producto.foto" src="{{producto.foto}}" alt="foto" width="200">
+                    <img *ngIf="!producto.foto" src="./assets/img/no-image.svg" alt="foto" width="200">
+                </div>
                 <ul class="list-group">
                     <li class="list-group-item text-capitalize">
                         nombre: 
                         <b>{{producto.nombre}}</b>
-                    </li>
-                    <li class="list-group-item text-capitalize">
-                        descripcion: 
-                        <b>{{producto.descripcion}}</b>
                     </li>
                     <li class="list-group-item text-capitalize">
                         precio: 
@@ -25,6 +25,10 @@
                         <b>
                             {{producto.precio_x_gr == false ? 'No': ''}}
                         </b>
+                    </li>
+                    <li class="list-group-item text-capitalize">
+                        descripcion: 
+                        <b>{{producto.descripcion}}</b>
                     </li>
                     <li class="list-group-item text-capitalize">
                         es producto: 
@@ -48,11 +52,6 @@
                     <li class="list-group-item text-capitalize">
                         comentario: 
                         <b>{{producto.comentario}}</b>
-                    </li>
-                    <li class="list-group-item text-capitalize">
-                        foto: 
-                        <img *ngIf="producto.foto" src="{{producto.foto}}" alt="foto" width="100">
-                        <img *ngIf="!producto.foto" src="./assets/img/no-image.svg" alt="foto" width="100">
                     </li>
                 </ul>
             </div>
