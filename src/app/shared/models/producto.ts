@@ -1,5 +1,6 @@
 import { environment } from "src/environments/environment";
 import { Aditamento } from "./aditamento";
+import { CategoriaProducto } from "./categoria-producto";
 import { PuntoVenta } from "./punto-venta";
 
 export class Producto {
@@ -14,12 +15,14 @@ export class Producto {
     publicado: boolean
     punto_venta_id: number;
     comentario: string;
+    categoria_producto_id: number;
     foto: string;
     foto_thumbnail: string;
     foto_thumbnail_sm: string;
     punto_venta: PuntoVenta;
     foto_preview?: string;
     mis_aditamentos: Array<Aditamento>;
+    mi_categoria: CategoriaProducto;
 
     constructor() {
         this.nombre = "";
@@ -32,10 +35,12 @@ export class Producto {
         this.publicado = true;
         this.punto_venta_id = 0;
         this.comentario = "";
+        this.categoria_producto_id = 0;
         this.foto = "";
         this.foto_thumbnail = "";
         this.foto_thumbnail_sm = "";
         this.punto_venta = new PuntoVenta();
         this.mis_aditamentos = [];
+        this.mi_categoria = new CategoriaProducto();
     }
 }

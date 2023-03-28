@@ -5,6 +5,8 @@ import { VentaRoutingModule } from './venta-routing.module';
 import { IndexComponent } from './pages/index/index.component';
 import { CreateComponent } from './pages/create/create.component';
 import { ReciboComponent } from './pages/recibo/recibo.component';
+import { EditComponent } from './pages/edit/edit.component';
+import { SelectProductoComponent } from './components/select-producto/select-producto.component';
 import {
   NgbActiveModal,
   NgbDatepickerModule,
@@ -13,8 +15,6 @@ import {
   NgbTypeaheadModule
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SelectProductoComponent } from './components/select-producto/select-producto.component';
-import { EditComponent } from './pages/edit/edit.component';
 import { RouterModule } from '@angular/router';
 
 @NgModule({

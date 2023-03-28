@@ -4,10 +4,12 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ModalDismissReasons, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { finalize, Subscription } from 'rxjs';
+import { CategoriaProducto } from 'src/app/shared/models/categoria-producto';
 import { Producto } from 'src/app/shared/models/producto';
 import { PuntoVenta } from 'src/app/shared/models/punto-venta';
 import Swal from 'sweetalert2';
 import { HttpService } from '../../services/http.service';
+import { HttpService as categoriaHttpService } from 'src/app/categoria-producto/services/http.service';
 
 @Component({
   selector: 'app-create',
@@ -21,12 +23,14 @@ export class CreateComponent implements OnInit {
   formProducto: FormGroup;
   subscription: Subscription;
   puntosVenta: Array<PuntoVenta>;
+  categorias: Array<CategoriaProducto>;
   @Output()
   isUpdated: EventEmitter<Boolean> = new EventEmitter<Boolean>();
 
   constructor(
     private modalService: NgbModal,
     private httpService: HttpService,
+    private categoriaHttpService: categoriaHttpService,
     private router: Router,
     public activeModal: NgbActiveModal,
     private title: Title) {
@@ -35,10 +39,11 @@ export class CreateComponent implements OnInit {
     this.submitted = false;
     this.subscription = new Subscription;
     this.puntosVenta = [];
+    this.categorias = [];
   }
 
   ngOnInit(): void {
-    this.getPuntosVenta();
+    this.getCategorias();
   }
 
   initForm(): FormGroup {
@@ -52,6 +57,7 @@ export class CreateComponent implements OnInit {
       descripcion: new FormControl(this.producto.descripcion, [
         Validators.required,
       ]),
+      categoria_producto_id: new FormControl(this.producto.categoria_producto_id),
       foto: new FormControl(this.producto.foto),
       precio: new FormControl(this.producto.precio, [
         Validators.required,
@@ -69,6 +75,13 @@ export class CreateComponent implements OnInit {
 
   open(content: any) {
     this.modalService.open(content);
+  }
+
+  getCategorias() {
+    this.categoriaHttpService.getCategorias().subscribe((data) => {
+      this.categorias = data;
+      this.getPuntosVenta();
+    });
   }
 
   getPuntosVenta() {

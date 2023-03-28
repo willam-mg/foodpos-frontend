@@ -1,12 +1,14 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { catchError, Subscription, throwError } from 'rxjs';
 import { User } from 'src/app/shared/models/user';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../../service/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LoadingService } from 'src/app/shared/services/loading.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -61,6 +63,19 @@ export class LoginComponent implements OnInit {
       this.submitted = true;
       this.subscription.add(
         this.userService.login(this.formUser.value)
+          .pipe(
+            catchError((error: HttpErrorResponse) => {
+              let errorMessage = error.error.message;
+              Swal.fire(
+                '',
+                errorMessage,
+                'warning'
+              );
+              this.submitted = false;
+              this.formUser.reset();
+              return throwError(errorMessage);
+            })
+          )
           .subscribe(async data => {
             this.user = data.user;
             localStorage.setItem(environment.store.userId, String(data.user.id));

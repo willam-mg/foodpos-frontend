@@ -8,8 +8,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { Venta } from 'src/app/shared/models/venta';
+import { SelectProductoComponent } from 'src/app/venta/components/select-producto/select-producto.component';
 import { VentaSearch } from 'src/app/shared/models/filters/venta-search';
-
+import { DetalleVenta } from 'src/app/shared/models/detalle-venta';
+import { Producto } from 'src/app/shared/models/producto';
 
 @Component({
   selector: 'app-index',
@@ -23,6 +25,7 @@ export class IndexComponent implements OnInit {
   responseData: DataResponse;
   pagination: Pagination;
   formVenta: FormGroup;
+  detalleVenta: Array<DetalleVenta>;
 
   constructor(
     private httpService: HttpService,
@@ -40,6 +43,7 @@ export class IndexComponent implements OnInit {
       filterFechaFin: new FormControl(this.httpService.filterSearch.cliente),
       filterEstado: new FormControl(this.httpService.filterSearch.cliente),
     });
+    this.detalleVenta = [];
   }
 
   ngOnInit(): void {
@@ -98,6 +102,21 @@ export class IndexComponent implements OnInit {
       suma += item.total;
     });
     return suma;
+  }
+
+  selectProducto(producto: Producto) {
+    const modalRef = this.modalService.open(SelectProductoComponent);
+    modalRef.componentInstance.setId(producto);
+    modalRef.componentInstance.listAditamentos();
+    modalRef.componentInstance.isSelected.subscribe((data: DetalleVenta) => {
+      console.log(data);
+      Swal.fire(
+        'Guardado',
+        'los datos se guardaron correctamente',
+        'success'
+      );
+      this.search();
+    });
   }
 
 }

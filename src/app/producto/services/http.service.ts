@@ -7,6 +7,7 @@ import { MessageResponse } from 'src/app/shared/models/response/message-response
 import { Producto } from 'src/app/shared/models/producto';
 import { Pagination } from 'src/app/shared/models/pagination';
 import { PuntoVenta } from 'src/app/shared/models/punto-venta';
+import { Aditamento } from 'src/app/shared/models/aditamento';
 
 const httpHeaders = {
   headers: new HttpHeaders(environment.apiConfig.headers),
@@ -33,6 +34,7 @@ export class HttpService {
     params = params.append('page', pagination.page.toString());
     params = params.append('per-page', pagination.pageSize.toString());
     params = params.append('nombre', filterSearch.nombre);
+    params = params.append('categoria_producto_id', filterSearch.categoria_producto_id);
     params = params.append('publicado', filterSearch.publicado);
     params = params.append('punto_venta_id', filterSearch.punto_venta_id);
     if (filterSearch.es_aditamento) {
@@ -66,7 +68,7 @@ export class HttpService {
       aditamento_id: idAditamento,
       descripcion: "es aditamento",
     }
-    return this.http.post<Producto>(`${path}/productos/aditamento/create`, body, httpHeaders);
+    return this.http.post<Producto>(`${path}/productos/aditamentos/create`, body, httpHeaders);
   }
   
   /**
@@ -75,7 +77,7 @@ export class HttpService {
    * @returns Producto
    */
   public removeAditamento(id: number): Observable<Producto> {
-    return this.http.delete<Producto>(`${path}/productos/aditamento/remove/${id}`, {
+    return this.http.delete<Producto>(`${path}/productos/aditamentos/remove/${id}`, {
       headers: new HttpHeaders(environment.apiConfig.headers),
       reportProgress: true,
     });
@@ -125,6 +127,13 @@ export class HttpService {
    */
   public puntosVenta(): Observable<Array<PuntoVenta>> {
     return this.http.get<Array<PuntoVenta>>(`${path}/productos/puntos-venta`, {
+      headers: new HttpHeaders(environment.apiConfig.headers),
+      reportProgress: true,
+    });
+  }
+
+  public misAditamentos(id: number): Observable<Array<Aditamento>> {
+    return this.http.get<Array<Aditamento>>(`${path}/productos/aditamentos/${id}`, {
       headers: new HttpHeaders(environment.apiConfig.headers),
       reportProgress: true,
     });

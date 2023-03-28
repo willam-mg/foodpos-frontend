@@ -1,28 +1,29 @@
 <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
-        <div class="row mb-3">
-            <div class="col-xs-12 col-sm-12 col-md-5">
-                <div class="form-group mb-3">
-                    <!-- <form [formGroup]="formSearchCodebar" (ngSubmit)="searchByCodeBar()" novalidate=""> -->
-                    <form [formGroup]="formSearchCodebar" novalidate="">
+    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
+        <form [formGroup]="formSearch" novalidate="">
+            <div class="row mb-3">
+                <div class="col-xs-7 col-sm-7 col-md-7">
+                    <div class="form-group mb-1">
                         <label for="codigo_barra">
-                            Codigo de barra 
+                            Nombre de producto 
                             <span class="text-danger">*</span>
                         </label>
                         <div class="input-group">
-                            <input type="text" id="codigo_barra" formControlName="codeBar" class="form-control"
-                                placeholder="Ingrese el codigo de barra" aria-label="Buscar" aria-describedby="button-codebar" autofocus autocomplete="false">
-                            <button class="btn btn-outline-secondary" type="submit" id="button-codebar" title="Agregar por codigo de barra">
-                                <i class="bi bi-upc"></i>
-                            </button>
+                            <input type="text" id="codigo_barra" formControlName="nombre" class="form-control"
+                                placeholder="Nombre producto" aria-label="Buscar" aria-describedby="button-codebar" autofocus autocomplete="false">
                             <button class="btn btn-outline-secondary" (click)="searchProducto()" type="button" id="button-cliente-select" title="Mostrar productos">
                                 <i class="bi bi-search"></i>
                             </button>
                         </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-2">
+                <div class="col-xs-5 col-sm-5 col-md-5">
+                    <label for="categoria">Categoria</label>
+                    <select class="form-select" name="categoria_producto_id" formControlName="categoria_producto_id" (change)="search()">
+                        <option *ngFor="let item of categorias" value="{{item.id}}"> {{item.nombre}} </option>
+                    </select>
+                </div>
+            <!-- <div class="col-xs-12 col-sm-12 col-md-2">
                 <div class="form-group mb-3">
                     <label for="producto">
                         Cantidad
@@ -30,59 +31,79 @@
                     </label>
                     <input type="number" min="1" step="1" [(ngModel)]="inputCantidad" class="form-control" placeholder="Cantidad">
                 </div>
+            </div> -->
+            </div>
+        </form>
+
+        <div class="mb-5">
+            <div class="row">                
+                <div class="col-3" *ngFor="let item of productos">
+                    <div class="card" (click)="selectProducto(item)">
+                        <img *ngIf="item.foto" src="{{item.foto}}" class="card-img-top" alt="foto">
+                        <img *ngIf="!item.foto" src="./assets/img/no-image.svg" class="card-img-top" alt="foto">
+                        <div class="card-body p-1 text-center" (click)="agregar()">
+                            <b>
+                                {{item.nombre}}
+                            </b> <br>
+                            <small>
+                                <b>
+                                    {{item.precio}}
+                                </b>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="productos.length > numerToShow" class="d-flex justify-content-between p-2">
+                <select class="form-select" style="width: auto" [(ngModel)]="pagination.pageSize" (ngModelChange)="search()">
+                    <option *ngFor="let item of pagination.sizeOptions" [ngValue]="item">{{item}}</option>
+                </select>
+                <small class="p-3">{{pagination.totalCount}} </small>
+                <div class="table-responsive">
+                    <ngb-pagination [collectionSize]="pagination.totalCount" [(page)]="pagination.page"
+                        [pageSize]="pagination.pageSize" (pageChange)="search()">
+                    </ngb-pagination>
+                </div>
             </div>
         </div>
-        
-        <div class="table-responsive mb-5">
-            <table class="table table-hover table-bordered">
-                <thead>
-                    <tr class="table-secondary">
-                        <th scope="col"></th>
-                        <th scope="col">Codigo</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Precio</th>
-                        <th scope="col">Cantidad</th>
-                        <th scope="col">Subtotal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of detalleVenta">
-                        <td>
-                            <button class="btn btn-outline-secondary" type="button" (click)="removeDetalle(item)" title="Remover de la lista">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </td>
-                        <th scope="row">{{item.producto.id}}</th>
-                        <td>{{item.producto.nombre}}</td>
-                        <td>{{item.precio}}</td>
-                        <td>{{item.cantidad}}</td>
-                        <td>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+        <div class="border p-3 mb-5 bg-body rounded" >
+            <h5>Detalle</h5>
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of detalleVenta">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img *ngIf="item.producto.foto" src="{{item.producto.foto_thumbnail}}" alt="foto"
+                                width="100%">
+                            <img *ngIf="!item.producto.foto" src="./assets/img/no-image.svg" alt="foto" width="100%">
+                        </div>
+                        <div class="col-md-5">
+                            {{item.nombre_producto}} <br>
                             <b>
-                                {{item.subtotal}}
+                                {{item.precio}} Bs.
                             </b>
-                        </td>
-                    </tr>
-                    <tr *ngIf="detalleVenta.length == 0">
-                        <td colspan="8" class="text-center">
-                            No hay registros
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr class="table-secondary">
-                        <td colspan="6" class="text-end">
-                        </td>
-                        <td>
-                            <b>{{totalDetalleVenta()}}</b>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
+                            <ul>
+                                <li *ngFor="let detItem of item.aditmanetos_venta">
+                                    {{detItem.numero_producto}}.- {{detItem.mi_aditamento.mi_aditamento.nombre}}
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <h4>{{item.cantidad}}</h4>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-danger" (click)="remove(item.id!)">
+                                <i class="bi bi-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
         </div>
-        
     </div>
     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-        <div class="shadow p-3 mb-5 bg-body rounded" style="height: 89vh; position:fixed; top:11vh; right:0; width:280px">
+        <div class="shadow p-3 mb-5 bg-body rounded">
             <div class="form-group mb-3">
                 <label for="cliente">
                     Cliente
@@ -138,15 +159,7 @@
                     <input type="date" class="form-control" placeholder="Efectivo" [(ngModel)]="inputFecha" title="Fecha">
                 </div>
             </div>
-            <div class="">
-                <div class="input-group">
-                    <button class="btn btn-outline-secondary" disabled title="Efectivo">
-                        <i class="bi bi-clock"></i>
-                    </button>
-                    <input type="time" class="form-control" placeholder="Efectivo" [(ngModel)]="inputHora" title="Hora">
-                </div>
-            </div>
-            <div class="mb-3 position-fixed bottom-0" style="width: 250px;">
+            <div class="mb-3">
                 <div class="d-grid gap-2">
                     <button class="btn btn-lg btn-success" (click)="registrarVenta()" [disabled]="submitted">
                         <i class="bi bi-plus"></i>

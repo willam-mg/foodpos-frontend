@@ -3,9 +3,10 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
+  HttpErrorResponse
 } from '@angular/common/http';
-import { finalize, Observable } from 'rxjs';
+import { catchError, finalize, Observable, throwError } from 'rxjs';
 import { AuthService } from 'src/app/auth/service/auth.service';
 import { Router } from '@angular/router';
 import { LoadingService } from '../services/loading.service';
@@ -18,6 +19,14 @@ export class TokenInterceptor implements HttpInterceptor {
     public auth: AuthService,
     private router: Router,
     private loadingService: LoadingService) {
+  }
+
+  private handleError(err: HttpErrorResponse): Observable<any> {
+    if (err.status === 401) {
+      this.auth.logout();
+      this.router.navigate(['/login']);
+    }
+    return throwError(err);
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -40,6 +49,8 @@ export class TokenInterceptor implements HttpInterceptor {
         if (this.count === 0) {
           this.loadingService.setHttpProgressStatus(false);
         }
-      }));
+      })).pipe(
+        catchError(err => this.handleError(err))
+      );
   }
 }

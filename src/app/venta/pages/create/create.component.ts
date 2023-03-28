@@ -8,6 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { SelectProductoComponent } from '../../components/select-producto/select-producto.component';
 import { HttpService as ProductoHttpService } from 'src/app/producto/services/http.service';
+import { HttpService as CategoriaHttpService } from 'src/app/categoria-producto/services/http.service';
 import { DetalleVenta } from 'src/app/shared/models/detalle-venta';
 import { catchError, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -16,6 +17,7 @@ import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { DataResponse } from 'src/app/shared/models/response/data-response';
 import { Producto } from 'src/app/shared/models/producto';
+import { CategoriaProducto } from 'src/app/shared/models/categoria-producto';
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
@@ -28,7 +30,7 @@ export class CreateComponent implements OnInit {
   responseData: DataResponse;
   pagination: Pagination;
   formVenta: FormGroup;
-  formSearchCodebar: FormGroup;
+  formSearch: FormGroup;
   detalleVenta: Array<DetalleVenta>;
   inputCantidad: number;
   fieldObservacion: string;
@@ -37,6 +39,9 @@ export class CreateComponent implements OnInit {
   inputCambio: number;
   inputFecha: string;
   inputHora: string;
+  productos: Array<Producto>;
+  categorias: Array<CategoriaProducto>;
+  numerToShow: number;
   @ViewChild(SelectProductoComponent) selectProductoComponent: any;
 
   constructor(
@@ -45,7 +50,8 @@ export class CreateComponent implements OnInit {
     private modalCliente: NgbModal,
     private modalProducto: NgbModal,
     private httpService: HttpService,
-    private productoHttpService:ProductoHttpService) {
+    private productoHttpService:ProductoHttpService,
+    private categoriaHttpService: CategoriaHttpService) {
     this.title.setTitle('Nueva venta');
     this.responseData = new DataResponse();
     this.subscription = new Subscription();
@@ -55,8 +61,9 @@ export class CreateComponent implements OnInit {
     this.formVenta = new FormGroup({
       fieldSearch: new FormControl(""),
     });
-    this.formSearchCodebar = new FormGroup({
-      codeBar: new FormControl(""),
+    this.formSearch = new FormGroup({
+      nombre: new FormControl(""),
+      categoria_producto_id: new FormControl(""),
     });
     this.detalleVenta = [];
     this.inputCantidad = 1;
@@ -66,9 +73,13 @@ export class CreateComponent implements OnInit {
     this.inputCambio = 0;
     this.inputFecha = moment().format('YYYY-MM-DD');
     this.inputHora = moment().format('hh:mm');
+    this.productos = [];
+    this.categorias = [];
+    this.numerToShow = 6;
   }
 
   ngOnInit(): void {
+    this.getCategorias();
   }
 
   ngOnDestroy(): void {
@@ -76,17 +87,24 @@ export class CreateComponent implements OnInit {
   }
 
   searchProducto() {
-    const modalRefProducto = this.modalProducto.open(SelectProductoComponent, { size: 'lg' });
-    modalRefProducto.componentInstance.isSelected.subscribe((data: Producto) => {
-      this.almacen = data;
-      this.addDetalleVenta(this.almacen);
+
+  }
+
+  selectProducto(producto: Producto) {
+    const modalRefProducto = this.modalProducto.open(SelectProductoComponent, { size: 'xl' });
+    modalRefProducto.componentInstance.setId(producto);
+    modalRefProducto.componentInstance.isSelected.subscribe((data: DetalleVenta) => {
+      console.log('after emmit', data);
+      this.detalleVenta.push(data);
+      // this.almacen = data;
+      // this.addDetalleVenta(this.almacen);
     });
   }
   
   // searchByCodeBar() {
   //   this.submitted = true;
   //   this.subscription.add(
-  //     this.productoHttpService.getByCodeBar(this.formSearchCodebar.value.codeBar)
+  //     this.productoHttpService.getByCodeBar(this.formSearch.value.codeBar)
   //       .pipe(
   //         catchError((error: HttpErrorResponse) => {
   //           let errorMessage = error.error.message;
@@ -96,7 +114,7 @@ export class CreateComponent implements OnInit {
   //             'warning'
   //           );
   //           this.submitted = false;
-  //           this.formSearchCodebar.reset();
+  //           this.formSearch.reset();
   //           return throwError(errorMessage);
   //         })
   //       )
@@ -104,7 +122,7 @@ export class CreateComponent implements OnInit {
   //         this.submitted = false;
   //         this.almacen = data;
   //         this.addDetalleVenta(this.almacen);
-  //         this.formSearchCodebar.reset();
+  //         this.formSearch.reset();
   //       })
   //   );
   // }
@@ -188,7 +206,7 @@ export class CreateComponent implements OnInit {
                 'warning'
               );
               this.submitted = false;
-              this.formSearchCodebar.reset();
+              this.formSearch.reset();
               return throwError(errorMessage);
             })
           ).subscribe(async (data) => {
@@ -215,5 +233,35 @@ export class CreateComponent implements OnInit {
       this.inputCambio = this.inputEfectivo - total;
     }
   }
+
+  getCategorias() { 
+    this.categoriaHttpService.getCategorias().subscribe((data) => {
+      this.categorias = data;
+      this.search();
+    });
+  }
+
+  search() {
+    let filterSearch = new Producto();
+    filterSearch.nombre = this.formSearch.value.nombre;
+    filterSearch.categoria_producto_id = this.formSearch.value.categoria_producto_id;
+    filterSearch.publicado = this.formSearch.value.publicado;
+    filterSearch.es_aditamento = this.formSearch.value.es_aditamento;
+    this.productoHttpService.search(this.formSearch.value, this.pagination).subscribe((data) => {
+      this.responseData = data;
+      this.productos = this.responseData.data;
+      this.pagination.totalCount = data.total;
+    });
+  }
+
+  agregar() {
+
+  }
+
+  remove(id:number) {
+    
+  }
+
+
 
 }
