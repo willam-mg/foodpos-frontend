@@ -71,12 +71,9 @@ export class HttpService {
    * @returns Observable<Venta>
    */
   public show(id: number): Observable<Venta> {
-    let params = new HttpParams();
-    params = params.append('id', id.toString());
-    return this.http.get<Venta>(`${path}/ventas/show`, {
+    return this.http.get<Venta>(`${path}/ventas/show/${id}`, {
       headers: new HttpHeaders(environment.apiConfig.headers),
       reportProgress: true,
-      params: params
     });
   }
   

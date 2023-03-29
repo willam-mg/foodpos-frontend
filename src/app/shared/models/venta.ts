@@ -1,5 +1,6 @@
 import { Cliente } from "./cliente";
 import { DetalleVenta } from "./detalle-venta";
+import { PuntoVenta } from "./punto-venta";
 import { User } from "./user";
 
 export class Venta {
@@ -12,6 +13,7 @@ export class Venta {
     cliente_id: number;
     user_id: number;
     punto_venta_id: number;
+    mi_punto_venta: PuntoVenta;
     detalleVenta: Array<DetalleVenta>;
     total: number;
     cliente: Cliente;
@@ -30,5 +32,6 @@ export class Venta {
         this.detalleVenta = [];
         this.cliente = new Cliente();
         this.user = new User();
+        this.mi_punto_venta = new PuntoVenta();
     }
 }

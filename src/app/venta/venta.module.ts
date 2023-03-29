@@ -16,6 +16,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { ShowComponent } from './pages/show/show.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { RouterModule } from '@angular/router';
     ReciboComponent,
     SelectProductoComponent,
     EditComponent,
+    ShowComponent,
   ],
   imports: [
     CommonModule,

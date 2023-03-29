@@ -12,7 +12,7 @@ export class DetalleVenta {
     venta_id: number;
     producto_id: number;
     producto: Producto;
-    subtotal: number;
+    sub_total: number;
     aditamentos_venta: Array<AditamentoVenta>;
 
     constructor() {
@@ -25,7 +25,7 @@ export class DetalleVenta {
         this.venta_id = 0;
         this.producto_id = 0;
         this.producto = new Producto();
-        this.subtotal = 0;
+        this.sub_total = 0;
         this.aditamentos_venta = [];
     }
 

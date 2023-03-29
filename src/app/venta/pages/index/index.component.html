@@ -46,7 +46,6 @@
         <thead>
             <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Cliente</th>
                 <th scope="col">Vendedor</th>
                 <th scope="col">Fecha</th>
                 <th scope="col">Hora</th>
@@ -57,14 +56,13 @@
         <tbody>
             <tr *ngFor="let item of ventas">
                 <th scope="row">{{item.id}}</th>
-                <td>{{item.cliente.nombre_razon_social}}</td>
-                <td>{{item.user.name}}</td>
+                <td>{{item.user?item.user.name:''}}</td>
                 <td>{{item.fecha}}</td>
                 <td>{{item.hora}}</td>
                 <td>{{item.total}}</td>
                 <td>
-                    <span class="badge bg-success" *ngIf="item.estado == 2" >{{item.estado}}</span>
-                    <span class="badge bg-danger" *ngIf="item.estado == 3" >{{item.estado}}</span>
+                    <span class="badge bg-success" *ngIf="item.estado == 2" >Vendido</span>
+                    <span class="badge bg-danger" *ngIf="item.estado == 3" >Cancelado</span>
                 </td>
                 <td>
                     <div class="dropdown">

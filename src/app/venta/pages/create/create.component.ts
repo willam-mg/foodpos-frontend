@@ -178,7 +178,7 @@ export class CreateComponent implements OnInit {
   totalDetalleVenta() {
     let suma = 0;
     this.detalleVenta.map((item) => {
-      suma += item.subtotal;
+      suma += item.sub_total;
     });
     return suma;
   }
