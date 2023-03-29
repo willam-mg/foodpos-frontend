@@ -57,7 +57,9 @@ export class CreateComponent implements OnInit {
       descripcion: new FormControl(this.producto.descripcion, [
         Validators.required,
       ]),
-      categoria_producto_id: new FormControl(this.producto.categoria_producto_id),
+      categoria_producto_id: new FormControl(this.producto.categoria_producto_id, [
+        Validators.required,
+      ]),
       foto: new FormControl(this.producto.foto),
       precio: new FormControl(this.producto.precio, [
         Validators.required,

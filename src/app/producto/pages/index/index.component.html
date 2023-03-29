@@ -23,6 +23,7 @@
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col" class="text-capitalize"> Foto </th>
+                <th scope="col" class="text-capitalize"> Categoria </th>
                 <th scope="col" class="text-capitalize"> nombre </th>
                 <th scope="col" class="text-capitalize"> precio </th>
                 <th scope="col" class="text-capitalize"> precio por Gr. </th>
@@ -39,6 +40,9 @@
                 <td>
                     <img *ngIf="item.foto" src="{{item.foto_thumbnail_sm}}" alt="foto" width="50">
                     <img *ngIf="!item.foto" src="./assets/img/no-image.svg" alt="foto" width="50">
+                </td>
+                <td>
+                    {{item.mi_categoria?item.mi_categoria.nombre:''}}
                 </td>
                 <td>
                     {{item.nombre}}

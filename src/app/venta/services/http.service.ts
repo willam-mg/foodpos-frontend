@@ -39,8 +39,8 @@ export class HttpService {
   * @returns Observable<Cliente[]>
   */
   public search(formSearchFilter: any, pagination: Pagination): Observable<DataResponse> {
-    this.pagination.setValues(pagination);
-    this.setFilterSearch(formSearchFilter);
+    // this.pagination.setValues(pagination);
+    // this.setFilterSearch(formSearchFilter);
     let params = new HttpParams();
     params = params.append('page', this.pagination.page.toString());
     params = params.append('per-page', this.pagination.pageSize.toString());
@@ -49,10 +49,10 @@ export class HttpService {
     params = params.append('filterFechaFin', this.filterSearch.fechaFin);
     params = params.append('filterEstado', this.filterSearch.estado);
 
-    return this.http.get<DataResponse>(`${path}/venta`, {
+    // params: params
+    return this.http.get<DataResponse>(`${path}/ventas`, {
       headers: new HttpHeaders(environment.apiConfig.headers),
       reportProgress: true,
-      params: params
     });
   }
 
@@ -61,8 +61,8 @@ export class HttpService {
    * @param body Observable<Venta>
    * @returns Venta
    */
-  public create(body: Venta): Observable<Venta> {
-    return this.http.post<Venta>(`${path}/venta/create`, body, httpHeaders);
+  public create(body: any): Observable<Venta> {
+    return this.http.post<Venta>(`${path}/ventas/create`, body, httpHeaders);
   }
 
   /**
@@ -73,7 +73,7 @@ export class HttpService {
   public show(id: number): Observable<Venta> {
     let params = new HttpParams();
     params = params.append('id', id.toString());
-    return this.http.get<Venta>(`${path}/venta/show`, {
+    return this.http.get<Venta>(`${path}/ventas/show`, {
       headers: new HttpHeaders(environment.apiConfig.headers),
       reportProgress: true,
       params: params
@@ -86,7 +86,7 @@ export class HttpService {
    * @returns Observable<Venta>
    */
   public cancelarVenta(id: number): Observable<Venta> {
-    return this.http.post<Venta>(`${path}/venta/cancelar?id=${id.toString()}`, {
+    return this.http.post<Venta>(`${path}/ventas/cancelar?id=${id.toString()}`, {
       headers: new HttpHeaders(environment.apiConfig.headers),
       reportProgress: true,
     });
@@ -148,7 +148,7 @@ export class HttpService {
   public update(id: number, body: Venta): Observable<Venta> {
     let params = new HttpParams();
     params = params.append('id', id.toString());
-    return this.http.put<Venta>(`${path}/venta/update`, body, {
+    return this.http.put<Venta>(`${path}/ventas/update`, body, {
       headers: new HttpHeaders(environment.apiConfig.headers),
       reportProgress: true,
       params: params

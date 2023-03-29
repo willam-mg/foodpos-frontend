@@ -38,37 +38,35 @@ export class IndexComponent implements OnInit {
     this.title.setTitle('Mis ventas');
     this.pagination = new Pagination();
     this.formVenta = new FormGroup({
-      filterCliente: new FormControl(this.httpService.filterSearch.cliente),
-      filterFechaInicio: new FormControl(this.httpService.filterSearch.cliente),
-      filterFechaFin: new FormControl(this.httpService.filterSearch.cliente),
-      filterEstado: new FormControl(this.httpService.filterSearch.cliente),
+      filterFechaInicio: new FormControl(null),
+      filterFechaFin: new FormControl(null),
+      filterEstado: new FormControl(null),
     });
     this.detalleVenta = [];
   }
 
   ngOnInit(): void {
-    console.log(this.httpService.filterSearch);
-    this.formVenta.controls['filterCliente'].setValue(this.httpService.filterSearch.cliente);
-    this.formVenta.controls['filterFechaInicio'].setValue(this.httpService.filterSearch.fechaInicio);
-    this.formVenta.controls['filterFechaFin'].setValue(this.httpService.filterSearch.fechaFin);
-    this.formVenta.controls['filterEstado'].setValue(this.httpService.filterSearch.estado);
+    // this.formVenta.controls['filterCliente'].setValue(null);
+    // this.formVenta.controls['filterFechaInicio'].setValue(null);
+    // this.formVenta.controls['filterFechaFin'].setValue(null);
+    // this.formVenta.controls['filterEstado'].setValue(null);
     this.search();
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    // this.subscription.unsubscribe();
   }
 
   search(): void {
     this.submitted = true;
-    this.subscription.add(
+    // this.subscription.add(
       this.httpService.search(this.formVenta.value, this.pagination).subscribe(data => {
         this.submitted = false;
         this.responseData = data;
         this.ventas = this.responseData.data;
         this.pagination.totalCount = data.total;
       })
-    );
+    // );
   }
 
   cancelarVenta(id: number) {

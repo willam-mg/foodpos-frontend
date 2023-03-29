@@ -18,7 +18,7 @@ export const environment = {
       Accept: 'application/json',
       'Cache-Control': 'no-cache',
     },
-    path: 'http://192.168.0.7:5001/api/v1'
+    path: 'http://localhost:8000/api/v1'
   }
 };
 

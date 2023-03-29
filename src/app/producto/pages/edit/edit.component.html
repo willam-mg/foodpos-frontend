@@ -135,6 +135,19 @@
             </div>
         </div>
         <div class="form-floating mb-3">
+            <select class="form-select" name="categoria_producto_id" formControlName="categoria_producto_id">
+                <option *ngFor="let item of categorias" value="{{item.id}}"
+                    [selected]="formProducto.controls['categoria_producto_id'].value==item.id"> {{item.nombre}} </option>
+            </select>
+            <label for="categoria">Categoria</label>
+            <div
+                [class.invalid-feedback]="formProducto.controls['categoria_producto_id'].invalid && formProducto.controls['categoria_producto_id'].touched">
+                <span *ngIf="formProducto.controls['categoria_producto_id'].errors?.['required']">
+                    La cateoria es requerida
+                </span>
+            </div>
+        </div>
+        <div class="form-floating mb-3">
             <select class="form-select" name="punto_venta_id" id="punto_venta_id" formControlName="punto_venta_id">
                 <option *ngFor="let item of puntosVenta" value="{{item.id}}"
                     [selected]="formProducto.controls['punto_venta_id'].value==item.id"> {{item.nombre_punto_venta}}

@@ -8,6 +8,8 @@ import { Producto } from 'src/app/shared/models/producto';
 import { PuntoVenta } from 'src/app/shared/models/punto-venta';
 import Swal from 'sweetalert2';
 import { HttpService } from '../../services/http.service';
+import { HttpService as categoriaHttpService } from 'src/app/categoria-producto/services/http.service';
+import { CategoriaProducto } from 'src/app/shared/models/categoria-producto';
 
 @Component({
   selector: 'app-edit',
@@ -21,6 +23,7 @@ export class EditComponent implements OnInit {
   formProducto: FormGroup;
   subscription: Subscription;
   puntosVenta: Array<PuntoVenta>;
+  categorias: Array<CategoriaProducto>;
   @Output()
   isUpdated: EventEmitter<Boolean> = new EventEmitter<Boolean>();
 
@@ -28,6 +31,7 @@ export class EditComponent implements OnInit {
     private modalService: NgbModal,
     private httpService: HttpService,
     private router: Router,
+    private categoriaHttpService: categoriaHttpService,
     public activeModal: NgbActiveModal,
     private title: Title) {
     this.submitted = false;
@@ -35,10 +39,12 @@ export class EditComponent implements OnInit {
     this.puntosVenta = [];
     this.producto = new Producto();
     this.formProducto = this.initForm();
+    this.categorias = [];
   }
 
   ngOnInit(): void {
     this.getPuntosVenta();
+    this.getCategorias();
   }
 
   initForm(): FormGroup {
@@ -58,6 +64,9 @@ export class EditComponent implements OnInit {
       es_producto: new FormControl(this.producto.es_producto),
       es_aditamento: new FormControl(this.producto.es_aditamento),
       publicado: new FormControl(this.producto.publicado),
+      categoria_producto_id: new FormControl(this.producto.categoria_producto_id, [
+        Validators.required,
+      ]),
       punto_venta_id: new FormControl(this.producto.punto_venta_id, [
         Validators.required,
       ]),
@@ -71,6 +80,13 @@ export class EditComponent implements OnInit {
 
   setId(id: number) {
     this.producto.id = id;
+  }
+
+  getCategorias() {
+    this.categoriaHttpService.getCategorias().subscribe((data) => {
+      this.categorias = data;
+      this.getPuntosVenta();
+    });
   }
 
   getProducto() {
@@ -99,15 +115,16 @@ export class EditComponent implements OnInit {
         throw new Error('Entrada de datos invalido');
       }
       this.submitted = true;
+      console.log('producto a enviar', this.producto);
       this.subscription.add(
         this.httpService.update(this.producto.id!, this.formProducto.value)
           .subscribe(async () => {
-            this.producto = new Producto();
+            // this.producto = new Producto();
             this.formProducto = this.initForm();
             this.activeModal.close();
             this.isUpdated.emit(true);
             Swal.fire(
-              'Registrado',
+              'Actualizado',
               'los datos se actualizaron correctamente',
               'success'
             );

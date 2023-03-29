@@ -35,8 +35,8 @@ export class HttpService {
     params = params.append('per-page', pagination.pageSize.toString());
     params = params.append('nombre', filterSearch.nombre);
     params = params.append('categoria_producto_id', filterSearch.categoria_producto_id);
-    params = params.append('publicado', filterSearch.publicado);
-    params = params.append('punto_venta_id', filterSearch.punto_venta_id);
+    // params = params.append('publicado', filterSearch.publicado);
+    // params = params.append('punto_venta_id', filterSearch.punto_venta_id);
     if (filterSearch.es_aditamento) {
       params = params.append('es_aditamento', filterSearch.es_aditamento);
     }

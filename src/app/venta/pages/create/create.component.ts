@@ -42,6 +42,7 @@ export class CreateComponent implements OnInit {
   productos: Array<Producto>;
   categorias: Array<CategoriaProducto>;
   numerToShow: number;
+  puntoVentaId: number;
   @ViewChild(SelectProductoComponent) selectProductoComponent: any;
 
   constructor(
@@ -69,6 +70,7 @@ export class CreateComponent implements OnInit {
     this.inputCantidad = 1;
     this.fieldObservacion = "";
     this.venta = new Venta();
+    this.puntoVentaId = 1;
     this.inputEfectivo = 0;
     this.inputCambio = 0;
     this.inputFecha = moment().format('YYYY-MM-DD');
@@ -192,11 +194,36 @@ export class CreateComponent implements OnInit {
       confirmButtonText: 'Registrar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.venta.comentario = this.fieldObservacion;
-        this.venta.detalleVenta = this.detalleVenta;
-        this.venta.fecha = this.inputFecha;
-        this.venta.hora = this.inputHora;
-        this.httpService.create(this.venta)
+        // llenando detalle de venta
+        let detalle = this.detalleVenta.map(item=>{
+          let detalleAditamento = item.aditamentos_venta.map(aditItem => {
+            return {
+              numero_producto: aditItem.numero_producto,
+              aditamento_id: aditItem.mi_aditamento.id!
+            }
+          });
+          return {
+            producto_id: item.producto.id!,
+            cantidad: item.cantidad,
+            descuento: item.descuento,
+            gramos: item.gramos,
+            aditamentos_venta: detalleAditamento
+          };
+        });
+
+        let body = {
+          comentario: this.fieldObservacion,
+          detalleVenta: detalle,
+          fecha: this.inputFecha,
+          punto_venta_id: this.puntoVentaId
+        };
+  
+        // this.venta.comentario = this.fieldObservacion;
+        // this.venta.detalleVenta = detalle;
+        // this.venta.fecha = this.inputFecha;
+        // this.venta.punto_venta_id = this.puntoVentaId;
+        // this.venta.hora = this.inputHora;
+        this.httpService.create(body)
           .pipe(
             catchError((error: HttpErrorResponse) => {
               let errorMessage = error.error.message;
@@ -243,10 +270,12 @@ export class CreateComponent implements OnInit {
 
   search() {
     let filterSearch = new Producto();
+    // nombre
+    // categoria_producto_id
     filterSearch.nombre = this.formSearch.value.nombre;
     filterSearch.categoria_producto_id = this.formSearch.value.categoria_producto_id;
-    filterSearch.publicado = this.formSearch.value.publicado;
-    filterSearch.es_aditamento = this.formSearch.value.es_aditamento;
+    // filterSearch.publicado = this.formSearch.value.publicado;
+    // filterSearch.es_aditamento = this.formSearch.value.es_aditamento;
     this.productoHttpService.search(this.formSearch.value, this.pagination).subscribe((data) => {
       this.responseData = data;
       this.productos = this.responseData.data;

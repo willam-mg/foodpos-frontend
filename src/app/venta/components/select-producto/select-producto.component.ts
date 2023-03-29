@@ -111,7 +111,7 @@ export class SelectProductoComponent implements OnInit {
     detalle.precio_x_gr =  null!;
     detalle.producto = this.producto;
     detalle.subtotal = detalle.cantidad * detalle.precio;
-    detalle.aditmanetos_venta = this.aditamentosSeleccionados;
+    detalle.aditamentos_venta = this.aditamentosSeleccionados;
     console.log('before emmit', detalle);
     this.isSelected.emit(detalle);
     this.modal.close();
