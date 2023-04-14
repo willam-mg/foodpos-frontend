@@ -287,10 +287,4 @@ export class CreateComponent implements OnInit {
 
   }
 
-  remove(id:number) {
-    
-  }
-
-
-
 }

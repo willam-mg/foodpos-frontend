@@ -45,6 +45,7 @@ export class ReciboComponent implements OnInit {
     this.subscription.add(
       this.httpsService.show(this.idVenta).subscribe(data => {
         this.venta = data;
+        this.sucursalName = data.mi_punto_venta.nombre_punto_venta;
       })
     );
   }

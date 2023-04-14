@@ -14,6 +14,6 @@ export const environment = {
       Accept: 'application/json',
       'Cache-Control': 'no-cache',
     },
-    path: 'http://test.pos.rnova-services.com/api'
+    path: 'http://localhost/backend/public/api/v1'
   }
 };

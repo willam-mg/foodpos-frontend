@@ -54,9 +54,7 @@ export class CreateComponent implements OnInit {
         Validators.required,
         Validators.maxLength(50)
       ]),
-      descripcion: new FormControl(this.producto.descripcion, [
-        Validators.required,
-      ]),
+      descripcion: new FormControl(this.producto.descripcion),
       categoria_producto_id: new FormControl(this.producto.categoria_producto_id, [
         Validators.required,
       ]),

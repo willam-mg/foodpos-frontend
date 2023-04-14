@@ -53,6 +53,9 @@ export class SelectProductoComponent implements OnInit {
       cantidad: new FormControl(1, [
         Validators.required,
       ]),
+      gramos: new FormControl(1, [
+        Validators.required,
+      ]),
     });
   }
 
@@ -88,7 +91,7 @@ export class SelectProductoComponent implements OnInit {
   // }
 
   seleccionar(aditamento: Aditamento) { 
-    let exists = this.aditamentosSeleccionados.find(item => item.id == aditamento.id);
+    let exists = this.aditamentosSeleccionados.find(item => item.mi_aditamento.id == aditamento.id);
     if (exists == undefined) {
       let aditamentoVenta = new AditamentoVenta();
       aditamentoVenta.mi_aditamento = aditamento;
@@ -107,8 +110,8 @@ export class SelectProductoComponent implements OnInit {
     detalle.precio = this.producto.precio!;
     detalle.cantidad = this.formDetalle.controls['cantidad'].value;
     detalle.descuento = 0;
-    detalle.gramos = null!;
-    detalle.precio_x_gr =  null!;
+    detalle.gramos = this.formDetalle.controls['gramos'].value;
+    detalle.precio_x_gr =  this.producto.precio_x_gr;
     detalle.producto = this.producto;
     detalle.sub_total = detalle.cantidad * detalle.precio;
     detalle.aditamentos_venta = this.aditamentosSeleccionados;
@@ -122,12 +125,14 @@ export class SelectProductoComponent implements OnInit {
     // );
   }
 
-  removeDetalle(id:number) {
-    this.aditamentosSeleccionados.map((item, key) => {
-      if (item.id === id) {
-        this.aditamentosSeleccionados.splice(key, 1);
-      }
-    });
+  removeDetalle(key:number) {
+    this.aditamentosSeleccionados.splice(key, 1);
+    // this.aditamentosSeleccionados.map((item, key) => {
+    //   if (item.id == id) {
+    //     console.log('id encontrados', item.id);
+    //     this.aditamentosSeleccionados.splice(key, 1);
+    //   }
+    // });
   }
 
   lessCantidad() {

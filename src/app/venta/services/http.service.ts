@@ -131,7 +131,7 @@ export class HttpService {
             }, 500);
           }
         </script>
-        <body onload = "imprimir()">${printContents}</body>
+        <body onload = "imprimir()" >${printContents}</body>
       </html>`
     );
     popupWin!.document.close();

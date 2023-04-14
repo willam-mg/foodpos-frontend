@@ -43,6 +43,14 @@
                                 </b>
                             </td>
                         </tr>
+                        <tr>
+                            <td>Precio x gramo</td>
+                            <td>
+                                <b>
+                                    {{producto.precio_x_gr?'Si':'No'}}
+                                </b>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -51,11 +59,11 @@
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                         <div class="row">
                             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 text-end">
-                                <button type="button" class="btn btn-lg btn-secondary" (click)="lessCantidad()">-</button>
+                                <button *ngIf="producto.precio_x_gr == false" type="button" class="btn btn-lg btn-secondary" (click)="lessCantidad()">-</button>
                             </div>
                             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
-                                <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" formControlName="cantidad" autocomplete="cantidad"
+                                <div *ngIf="producto.precio_x_gr == false"  class="form-floating mb-3">
+                                    <input  type="number" class="form-control" formControlName="cantidad" autocomplete="cantidad"
                                         placeholder="Cantidad"
                                         [class.is-invalid]="formDetalle.controls['cantidad'].invalid && formDetalle.controls['cantidad'].touched">
                                     <label for="cantidad">cantidad</label>
@@ -66,9 +74,24 @@
                                         </span>
                                     </div>
                                 </div>
+                                <div *ngIf="producto.precio_x_gr"  class="form-floating mb-3">
+                                    <input type="number" class="form-control" formControlName="gramos"
+                                        placeholder="Gramos"
+                                        [class.is-invalid]="formDetalle.controls['gramos'].invalid && formDetalle.controls['gramos'].touched">
+                                    <label for="gramos">Ingrese el peso en Gramos</label>
+                                    <div
+                                        [class.invalid-feedback]="formDetalle.controls['gramos'].invalid && formDetalle.controls['gramos'].touched">
+                                        <span *ngIf="formDetalle.controls['gramos'].errors?.['required']">
+                                            El gramos es requerido
+                                        </span>
+                                    </div>
+                                    <div class="valid-feedback">
+                                        Ingrese el peso en gramos
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 text-start">
-                                <button type="button" class="btn btn-lg btn-secondary" (click)="sumCantidad()">+</button>
+                                <button *ngIf="producto.precio_x_gr == false" type="button" class="btn btn-lg btn-secondary" (click)="sumCantidad()">+</button>
                             </div>
                         </div>
                     </div>
@@ -97,7 +120,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                         <ul class="list-group">
-                            <li class="list-group-item" *ngFor="let item of aditamentosSeleccionados">
+                            <li class="list-group-item" *ngFor="let item of aditamentosSeleccionados let key=index">
                                 <div class="row">
                                     <div class="col-md-2">
                                         <img *ngIf="item.mi_aditamento.mi_aditamento.foto" src="{{item.mi_aditamento.mi_aditamento.foto_thumbnail}}" alt="foto"
@@ -106,7 +129,7 @@
                                     </div>
                                     <div class="col-md-8">{{item.mi_aditamento.mi_aditamento.nombre}}</div>
                                     <div class="col-md-2">
-                                        <button type="button" class="btn btn-danger" (click)="removeDetalle(item.id!)">
+                                        <button type="button" class="btn btn-danger" (click)="removeDetalle(key)">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </div>

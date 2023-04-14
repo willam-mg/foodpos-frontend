@@ -73,40 +73,56 @@
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-        <div class="border p-3 mb-5 bg-body rounded">
-            <h5>Detalle</h5>
+        <div class="pt-3 pb-3 mb-5 bg-body">
+            <h5>Detalle de venta</h5>
             <ul class="list-group">
                 <li class="list-group-item" *ngFor="let item of detalleVenta">
                     <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 p-0">
                             <img *ngIf="item.producto.foto" src="{{item.producto.foto_thumbnail}}" alt="foto"
                                 width="100%">
-                            <img *ngIf="!item.producto.foto" src="./assets/img/no-image.svg" alt="foto" width="100%">
+                            <img *ngIf="!item.producto.foto" src="./assets/img/no-image.svg" alt="foto" width="100%" height="auto">
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
+                        <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-9 align-middle">
                             <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 align-middle">
                                     {{item.nombre_producto}} <br>
-                                    <b>
-                                        {{item.precio}} Bs.
+                                    {{item.precio}} Bs. <br>
+                                </div>
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 col-xl-3 align-middle p-0">
+                                    <b *ngIf="item.precio_x_gr === false">{{item.cantidad}}</b>
+                                    <b *ngIf="item.precio_x_gr === true">{{item.gramos}} gr.</b>
+                                </div>
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 col-xl-3 align-middle p-0">
+                                    <b *ngIf="item.precio_x_gr === false">
+                                        {{item.precio * item.cantidad}} Bs.
+                                    </b>
+                                    <b *ngIf="item.precio_x_gr === true">
+                                        {{item.precio * item.gramos}} Bs.
                                     </b>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
-                                    <h4>{{item.cantidad}}</h4>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 col-xl-9 align-middle">
+                                    
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1 col-xl-1 text-end">
-                                    <button type="button" class="btn btn-danger" (click)="remove(item.id!)">
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 col-xl-3 align-middle text-center">
+                                    <button type="button" class="btn btn-danger" (click)="removeDetalle(item)">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
                             </div>
-                            <small>
-                                <ul>
-                                    <li *ngFor="let detItem of item.aditamentos_venta">
-                                        {{detItem.numero_producto}}.- {{detItem.mi_aditamento.mi_aditamento.nombre}}
-                                    </li>
-                                </ul>
-                            </small>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 align-middle">
+                                    <small>
+                                        <ul>
+                                            <li *ngFor="let detItem of item.aditamentos_venta">
+                                                {{detItem.mi_aditamento.mi_aditamento.nombre}}
+                                            </li>
+                                        </ul>
+                                    </small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </li>
